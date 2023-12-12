@@ -11,106 +11,125 @@
 
     <!-- Food Section -->
 
+    <!-- Drinks Section -->
+
+    <!-- Navigation Bar -->
+
     <TextView
         android:id="@+id/menuTitle"
-        android:layout_width="109dp"
-        android:layout_height="39dp"
-        android:fontFamily="@font/nunito_sans_bold"
+        android:layout_width="269dp"
+        android:layout_height="52dp"
 
-        android:text="MENU"
+        android:fontFamily="@font/nunito_sans_bold"
+        android:text="Top categories"
         android:textColor="@color/black"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintHorizontal_bias="0.176"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.233" />
+        app:layout_constraintVertical_bias="0.178" />
 
-    <ImageView
-        android:id="@+id/foodsDirect"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/plate"
-        app:layout_constraintTop_toBottomOf="@id/menuTitle"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/drinksDirect"
-        app:layout_constraintHorizontal_bias="0.5"
-        android:layout_marginTop="20dp"/>
-
-    <TextView
-        android:id="@+id/foodLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Food"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/foodsDirect"
-        app:layout_constraintStart_toStartOf="@id/foodsDirect"
-        app:layout_constraintEnd_toEndOf="@id/foodsDirect"/>
-
-    <!-- Drinks Section -->
-    <ImageView
-        android:id="@+id/drinksDirect"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
-        android:src="@drawable/drinks111"
-        app:layout_constraintTop_toBottomOf="@id/menuTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/foodsDirect"
-        android:layout_marginTop="20dp"/>
-
-    <TextView
-        android:id="@+id/drinksLabel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Drinks"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        app:layout_constraintTop_toBottomOf="@id/drinksDirect"
-        app:layout_constraintStart_toStartOf="@id/drinksDirect"
-        app:layout_constraintEnd_toEndOf="@id/drinksDirect"/>
-
-    <!-- Navigation Bar -->
     <LinearLayout
         android:id="@+id/navigationBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/yallow"
+        android:background="@color/black"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/profileIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_account_circle_24"/>
+            app:srcCompat="@drawable/baseline_account_circle_24" />
 
         <ImageView
             android:id="@+id/homeIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_home_24"/>
+            app:srcCompat="@drawable/baseline_home_24" />
 
         <ImageView
             android:id="@+id/cartIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_shopping_cart_24"/>
+            app:srcCompat="@drawable/baseline_shopping_cart_24" />
 
         <ImageView
             android:id="@+id/logoutIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_logout_24"/>
+            app:srcCompat="@drawable/baseline_logout_24" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="209dp"
+        android:layout_height="193dp"
+        android:background="@drawable/circle_border"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.379">
+
+        <ImageView
+            android:id="@+id/foodsDirect"
+            android:layout_width="116dp"
+            android:layout_height="111dp"
+            android:background="@drawable/simple_circle"
+            android:scaleType="centerCrop"
+            android:src="@drawable/plate" />
+
+        <TextView
+            android:id="@+id/foodLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Food"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="203dp"
+        android:layout_height="185dp"
+        android:background="@drawable/circle_border"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.798">
+
+        <ImageView
+            android:id="@+id/drinksDirect"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@drawable/drinks111" />
+
+        <TextView
+            android:id="@+id/drinksLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/nunito_sans_bold"
+            android:text="Drinks"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

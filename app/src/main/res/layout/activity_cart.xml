@@ -35,47 +35,47 @@
         android:id="@+id/navigationBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/yallow"
+        android:background="@color/black"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/profileIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_account_circle_24"/>
+            app:srcCompat="@drawable/baseline_account_circle_24" />
 
         <ImageView
             android:id="@+id/homeIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_home_24"/>
+            app:srcCompat="@drawable/baseline_home_24" />
 
         <ImageView
             android:id="@+id/cartIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_shopping_cart_24"/>
+            app:srcCompat="@drawable/baseline_shopping_cart_24" />
 
         <ImageView
             android:id="@+id/logoutIcon"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_logout_24"/>
+            app:srcCompat="@drawable/baseline_logout_24" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/capriola"
+        android:fontFamily="@font/nunito_sans_bold"
         android:text="Total:"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"

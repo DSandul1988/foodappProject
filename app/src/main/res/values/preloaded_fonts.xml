@@ -5,6 +5,8 @@
         <item>@font/capriola</item>
         <item>@font/days_one</item>
         <item>@font/fanwood_text</item>
+        <item>@font/nunito</item>
+        <item>@font/nunito_extralight</item>
         <item>@font/nunito_sans_bold</item>
     </array>
 </resources>

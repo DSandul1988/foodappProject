@@ -7,6 +7,9 @@
     tools:context=".RegisterActivity">
 
     <!-- Name Input -->
+
+
+
     <EditText
         android:id="@+id/regNameTxt"
         android:layout_width="0dp"
@@ -14,67 +17,77 @@
         android:layout_marginStart="32dp"
         android:layout_marginTop="32dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/oval_border"
         android:hint="Enter your Name"
         android:inputType="text"
-        app:layout_constraintTop_toTopOf="parent"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Email Input -->
     <EditText
         android:id="@+id/regEmailTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/oval_border"
         android:hint="Enter your Email"
         android:inputType="textEmailAddress"
-        app:layout_constraintTop_toBottomOf="@id/regNameTxt"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/regNameTxt" />
 
     <!-- Address Input -->
     <EditText
         android:id="@+id/adressTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/oval_border"
         android:hint="Address"
         android:inputType="textPostalAddress"
-        app:layout_constraintTop_toBottomOf="@id/regEmailTxt"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/regEmailTxt" />
 
     <!-- Password Input -->
     <EditText
         android:id="@+id/regPasswordTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/oval_border"
         android:hint="Enter your Password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/adressTxt"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/adressTxt" />
 
     <!-- Confirm Password Input -->
     <EditText
         android:id="@+id/regConfPasswordTxt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/oval_border"
         android:hint="Confirm your Password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@id/regPasswordTxt"
+        android:textColorHint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/regPasswordTxt" />
 
     <!-- Register Button -->
 
@@ -84,9 +97,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="72dp"
-        android:background="@color/yallow"
+        android:background="@color/black"
+        android:fontFamily="@font/nunito_extralight"
         android:text="Register"
-        app:backgroundTint="@color/yallow"
+        app:backgroundTint="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/regConfPasswordTxt" />
@@ -96,6 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:fontFamily="@font/nunito_extralight"
         android:text="Already with us? LOG IN"
         android:textColor="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -103,5 +118,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/regConfBtn"
         app:layout_constraintVertical_bias="0.808" />
+
+
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

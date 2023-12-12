@@ -34,6 +34,7 @@ class AccountDetails : AppCompatActivity() {
     private lateinit var updateProfile: Button
     private lateinit var profileImageView: ImageView
     private lateinit var backBtn: ImageView
+    private lateinit var profileImageCamera: ImageView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -45,11 +46,11 @@ class AccountDetails : AppCompatActivity() {
         userE = findViewById(R.id.profileEmail)
         userNa = findViewById(R.id.profileAttName)
         userAddress = findViewById(R.id.profileAdressTxt)
-        updateProfilePicLink = findViewById(R.id.updatePicture)
+
         updateProfile = findViewById(R.id.updateProfilebtn)
         profileImageView = findViewById(R.id.profilePicture)
         backBtn =findViewById(R.id.backArrow)
-
+        profileImageCamera =findViewById(R.id.updateProfileCamera)
         // Get current user
         val user = Firebase.auth.currentUser
         user?.let { currentUser ->
@@ -63,7 +64,7 @@ backBtn.setOnClickListener{
     val intent =Intent(this@AccountDetails,MenuActivity::class.java)
     startActivity(intent)
 }
-        updateProfilePicLink.setOnClickListener {
+        profileImageCamera.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
             startActivityForResult(intent, IMAGE_PICK_CODE)
@@ -142,7 +143,8 @@ backBtn.setOnClickListener{
     private fun loadProfileImage(imageUrl: String) {
         Glide.with(this)
             .load(imageUrl)
-            .placeholder(R.drawable.baseline_account_box_24) // Replace with your placeholder image
+            .placeholder(R.drawable.baseline_account_box_24)
+            .circleCrop()// Replace with your placeholder image
             .into(profileImageView)
     }
 

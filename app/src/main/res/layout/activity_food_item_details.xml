@@ -19,6 +19,7 @@
         android:layout_width="90dp"
         android:layout_height="54dp"
         android:background="@color/black"
+        android:fontFamily="@font/nunito_extralight"
         android:text="Checkout"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -33,6 +34,7 @@
         android:layout_width="97dp"
         android:layout_height="63dp"
         android:background="@color/yallow"
+        android:fontFamily="@font/nunito_extralight"
         android:text="Add to cart"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -47,6 +49,7 @@
         android:layout_width="124dp"
         android:layout_height="92dp"
         android:background="@color/black"
+        android:fontFamily="@font/nunito_extralight"
         android:text="Choose More Drinks"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -60,7 +63,7 @@
         android:id="@+id/navigationBar"
         android:layout_width="411dp"
         android:layout_height="wrap_content"
-        android:background="@color/yallow"
+        android:background="@color/black"
         android:orientation="horizontal"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -113,7 +116,7 @@
             android:id="@+id/textView4"
             android:layout_width="325dp"
             android:layout_height="25dp"
-            android:fontFamily="@font/capriola"
+            android:fontFamily="@font/nunito_sans_bold"
             android:text="Item name"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -122,13 +125,14 @@
             android:id="@+id/drinkitemNameTxt"
             android:layout_width="284dp"
             android:layout_height="40dp"
+            android:fontFamily="@font/nunito"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textView6"
             android:layout_width="215dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/capriola"
+            android:fontFamily="@font/nunito_sans_bold"
             android:text="Item description"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -137,13 +141,14 @@
             android:id="@+id/drinkItemDescriptionTxt"
             android:layout_width="255dp"
             android:layout_height="40dp"
+            android:fontFamily="@font/nunito"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="271dp"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/capriola"
+            android:fontFamily="@font/nunito_sans_bold"
             android:text="Price"
             android:textColor="@color/black"
             android:textSize="20sp" />
@@ -152,6 +157,7 @@
             android:id="@+id/drinkItemPriceTxt"
             android:layout_width="257dp"
             android:layout_height="57dp"
+            android:fontFamily="@font/nunito"
             android:textSize="18sp" />
     </LinearLayout>
 
@@ -168,8 +174,8 @@
 
     <EditText
         android:id="@+id/feedbackText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="163dp"
+        android:layout_height="49dp"
         android:ems="10"
         android:hint="Leave feedback"
         android:inputType="text"
@@ -182,22 +188,23 @@
 
     <Button
         android:id="@+id/feedBackBtn"
-        android:layout_width="124dp"
-        android:layout_height="51dp"
+        android:layout_width="131dp"
+        android:layout_height="62dp"
+        android:fontFamily="@font/nunito_extralight"
         android:text="Leave feedback"
         app:backgroundTint="@color/black"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.89"
+        app:layout_constraintHorizontal_bias="0.839"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.733" />
+        app:layout_constraintVertical_bias="0.729" />
 
     <TextView
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/fanwood_text"
+        android:fontFamily="@font/nunito_sans_bold"
         android:text="Our Customers Feedback"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
