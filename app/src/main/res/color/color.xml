@@ -1,0 +1,4 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Purple Color -->
+    <item android:color="#800080" />
+</selector>

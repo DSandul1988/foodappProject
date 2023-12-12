@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AdminAct.AdminWelcomePage">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Your orders will appear here"
+        android:textColor="@color/yallow"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.526"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.141" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/welcomeRecycler"
+        android:layout_width="300dp"
+        android:layout_height="298dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.513"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.392" />
+
+    <Button
+        android:id="@+id/WelcomeFoodBtn"
+        android:layout_width="151dp"
+        android:layout_height="37dp"
+        android:background="@color/yallow"
+        android:fontFamily="@font/capriola"
+        android:gravity="center"
+        android:text="Add food"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:backgroundTint="@color/yallow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.938"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.832" />
+
+    <Button
+        android:id="@+id/WelcomeDrnkBtn"
+        android:layout_width="151dp"
+        android:layout_height="37dp"
+        android:background="@color/yallow"
+        android:fontFamily="@font/capriola"
+        android:gravity="center"
+        android:text="Add drink"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:backgroundTint="@color/yallow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.832" />
+
+    <Button
+        android:id="@+id/WelcomeLogOutBtn"
+        android:layout_width="151dp"
+        android:layout_height="37dp"
+        android:background="@color/yallow"
+        android:fontFamily="@font/capriola"
+        android:gravity="center"
+        android:text="Log out"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:backgroundTint="@color/yallow"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.553"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.976" />
+</androidx.constraintlayout.widget.ConstraintLayout>

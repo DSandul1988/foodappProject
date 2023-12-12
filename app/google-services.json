@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "152073206958",
+    "project_id": "finalapplast",
+    "storage_bucket": "finalapplast.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:152073206958:android:c8b62c59e58a653247813f",
+        "android_client_info": {
+          "package_name": "com.example.finalapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCjJNPe2L_ix92wmI3wOAGO4o3yKABShug"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
