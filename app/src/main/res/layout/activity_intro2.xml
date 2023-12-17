@@ -4,23 +4,19 @@
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/green"
     tools:context=".introActivity">
 
     <LinearLayout
-        android:layout_width="336dp"
-        android:layout_height="485dp"
+        android:layout_width="342dp"
+        android:layout_height="375dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/imageView4"
-            android:layout_width="match_parent"
-            android:layout_height="279dp"
-            app:srcCompat="@drawable/plate" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.468">
 
         <TextView
             android:id="@+id/textView"
@@ -32,7 +28,7 @@
             android:gravity="center"
             android:text="READY TO EAT?"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="60sp"
             android:textStyle="bold" />
 
         <ProgressBar

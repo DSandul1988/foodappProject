@@ -1,5 +1,6 @@
 package com.example.finalapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
@@ -23,21 +24,29 @@ class OrderStatusActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_status)
 
-
+        val messageText = intent.getStringExtra("order_status")
         status = findViewById(R.id.orderStatusTxt)
-        auth =FirebaseAuth.getInstance()
-        val currentUser = auth.currentUser?.uid ?:""
-        firebaseUtils = FirebaseUtils()
-        user1ID = currentUser
-        user2ID = "zN8m124PSqSxYHhnMHsWyNHhooY2"
-        ChatRoomId = firebaseUtils.getChatRoomId(user1ID, user2ID)
 
-        getCreateChatRoom()
 
-        fetchMessages()
+//        auth =FirebaseAuth.getInstance()
+//        val currentUser = auth.currentUser?.uid ?:""
+//        firebaseUtils = FirebaseUtils()
+//        user1ID = currentUser
+//        user2ID = "URvJoAyPCNMxeZvfPHQy4XtGwHp2"
+//        ChatRoomId = firebaseUtils.getChatRoomId(user1ID, user2ID)
+//
+//        getCreateChatRoom()
+//
+//        fetchMessages()
 
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MenuActivity::class.java)
 
+        startActivity(intent)
+        finish()
+    }
     private fun getCreateChatRoom() {
         firebaseUtils.getChatRoom(ChatRoomId).addListenerForSingleValueEvent(object :
             ValueEventListener {

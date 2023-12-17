@@ -15,6 +15,18 @@
         android:theme="@style/Theme.FinalApp"
         tools:targetApi="31">
         <activity
+            android:name=".pastOrderDetails"
+            android:exported="false" />
+        <activity
+            android:name=".adminPastOrders"
+            android:exported="false" />
+        <activity
+            android:name=".myOrders"
+            android:exported="false" />
+        <activity
+            android:name=".resetPassword"
+            android:exported="false" />
+        <activity
             android:name=".AdminAct.adminFoodItemDetails"
             android:exported="false" />
         <activity

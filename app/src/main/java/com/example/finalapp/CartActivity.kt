@@ -4,7 +4,9 @@ package com.example.finalapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,17 @@ import com.example.finalapp.Model.UserModel
 import com.example.finalapp.utils.CartStorage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.messaging.FirebaseMessaging
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
+import okhttp3.Response
+import okio.IOException
+import org.json.JSONObject
 import java.util.UUID
 
 class CartActivity : AppCompatActivity() {
@@ -24,12 +37,18 @@ class CartActivity : AppCompatActivity() {
     private lateinit var placeOrder: Button
     private lateinit var deleteItem: Button
     private lateinit var totalV : TextView
+    private lateinit var logout: ImageView
+    private lateinit var profile: ImageView
+    private lateinit var home: ImageView
+    private  lateinit var  auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
-
-
+        auth= FirebaseAuth.getInstance()
+        logout =findViewById(R.id.logoutIcon)
+        home=findViewById(R.id.homeIcon)
+        profile=findViewById(R.id.profileIcon)
         cartRecyclerView = findViewById(R.id.cartRecycler)
         cartRecyclerView.layoutManager = LinearLayoutManager(this)
         placeOrder = findViewById(R.id.placeOrderBtn)
@@ -50,8 +69,6 @@ totalV.text =total.toString()
         }
         cartRecyclerView.adapter = cartAdapter
 
-
-
         placeOrder.setOnClickListener {
             placeOrder()
 
@@ -59,6 +76,26 @@ totalV.text =total.toString()
             startActivity(intent)
         }
 
+
+
+        home.setOnClickListener{   val intent =Intent(this@CartActivity, MenuActivity::class.java)
+            startActivity(intent)}
+        profile.setOnClickListener{   val intent =Intent(this@CartActivity, AccountDetails::class.java)
+            startActivity(intent)}
+        logout.setOnClickListener {
+            FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Firebase token deletion successful, proceed with sign-out
+                    auth.signOut()
+
+                    // Start the MainActivity
+                    val intent = Intent(this@CartActivity, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // Handle the error in token deletion, if necessary
+                }
+            }
+        }
 
     }
 
@@ -82,7 +119,7 @@ totalV.text =total.toString()
             newOrderRef.setValue(newOrder).addOnCompleteListener { orderTask ->
                 // Handle order creation success or failure
                 if (orderTask.isSuccessful) {
-                    // Clear the global cart after placing the order
+                    sendNotification("You have a new order !!!")// Clear the global cart after placing the order
                     CartStorage.cartItems.clear()
                     cartAdapter.setMenuItems(CartStorage.cartItems)
                 }
@@ -102,8 +139,119 @@ totalV.text =total.toString()
             }
         }
         return total
+     }
+
+    private fun sendNotification(message: String) {
+        Log.e("sendNotification", "Starting sendNotification function")
+        val databaseReference = FirebaseDatabase.getInstance().getReference("users")
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val userId = currentUser?.uid
+        val otherUserId = "URvJoAyPCNMxeZvfPHQy4XtGwHp2" // Replace with the actual other user ID
+
+        Log.d("sendNotification", "Fetching data for current user ID: $userId")
+
+        // Fetch the current user's data
+        if (userId != null) {
+            databaseReference.child(userId).get().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Log.e("sendNotification", "Successfully fetched data for current user ID: $userId")
+                    val currentUser = task.result?.getValue(UserModel::class.java)
+
+                    Log.e("sendNotification", "Fetching data for other user ID: $otherUserId")
+
+                    // Fetch the other user's data
+                    databaseReference.child(otherUserId).get().addOnCompleteListener { otherTask ->
+                        if (otherTask.isSuccessful) {
+                            Log.e("sendNotification", "Successfully fetched data for other user ID: $otherUserId")
+                            val otherUser = otherTask.result?.getValue(UserModel::class.java)
+
+                            currentUser?.let { currentUserData ->
+                                otherUser?.let { otherUserData ->
+                                    try {
+                                        Log.e("sendNotification", "Preparing notification payload for user ID: $otherUserId")
+
+                                        val jsonObject = JSONObject()
+                                        val notificationObj = JSONObject().apply {
+                                            put("title", currentUserData.UserName)
+                                            put("body", message)
+                                        }
+
+                                        val dataObj = JSONObject().apply {
+                                            put("userId", currentUserData.orderId)
+                                        }
+
+                                        jsonObject.apply {
+                                            put("notification", notificationObj)
+                                            put("data", dataObj)
+                                            put("to", otherUserData.FCMToken) // Use the other user's FCM token
+                                        }
+
+                                        callAPI(jsonObject)
+                                        Log.e("sendNotification", "Notification payload sent to API")
+
+                                    } catch (e: Exception) {
+                                        Log.e("sendNotification", "Exception in sending notification", e)
+                                    }
+                                } ?: run {
+                                    Log.e("sendNotification", "Failed to fetch data for other user ID: $otherUserId - User data is null")
+                                }
+                            } ?: run {
+                                Log.e("sendNotification", "Failed to fetch data for current user ID: $userId - User data is null")
+                            }
+                        } else {
+                            Log.e("sendNotification", "Failed to fetch data for other user ID: $otherUserId")
+                        }
+                    }
+                } else {
+                    Log.e("sendNotification", "Failed to fetch data for current user ID: $userId")
+                }
+            }
+        }
     }
-}
+
+
+// Ensure the callAPI function is defined elsewhere in your code.
+
+
+
+
+    private fun callAPI(jsonObject: JSONObject) {
+        val JSON = "application/json; charset=utf-8".toMediaType()
+        val client = OkHttpClient()
+        val url = "https://fcm.googleapis.com/fcm/send"
+        val body: RequestBody = jsonObject.toString().toRequestBody(JSON)
+
+        // Debugging: Log the JSON payload
+        Log.d("NotificationService", "Sending notification with payload: ${jsonObject.toString()}")
+
+        val serverKey = "key=AAAAI2hE_K4:APA91bFS4GsK6zL7cRNCZZb0uXXXRhGABGcV5-UNAr70Q8LxH6jL77Jjo3Ec-Q7hBufQSsvUXazjwcJnrggA2jvtq2D45jkmMWvZoq_iRI-yj5PNchIBupoOLgnYP30h6WJCu6r9OktO" // Replace with your actual server key
+        // Debugging: Log part of the server key
+        Log.d("NotificationService", "Using server key: ${serverKey.take(10)}...")
+
+        val request = Request.Builder()
+            .url(url)
+            .post(body)
+            .header("Authorization", serverKey)
+            .build()
+
+        // Perform the network request asynchronously
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                // Log the exception with the stack trace
+                Log.e("NotificationService", "Network call failed", e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if (response.isSuccessful) {
+                    Log.i("NotificationService", "Notification sent successfully")
+                } else {
+                    val responseBody = response.body?.string()
+                    Log.e("NotificationService", "Failed to send notification, server responded with status: ${response.code}, response: $responseBody")
+                }
+            }
+        })
+    }}
+
 
 
 

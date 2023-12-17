@@ -28,4 +28,37 @@
         app:layout_constraintStart_toStartOf="@id/feedName"
         app:layout_constraintTop_toBottomOf="@id/feedName" />
 
+    <EditText
+        android:id="@+id/replyInput"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="Type your reply here"
+        android:inputType="textMultiLine"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/feedText" />
+
+    <Button
+        android:id="@+id/replyButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:fontFamily="@font/nunito_extralight"
+        android:text="Reply"
+        app:backgroundTint="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/replyInput" />
+
+    <TextView
+        android:id="@+id/replyDisplay"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito"
+        android:text="Replies will be displayed here"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:visibility="gone"
+    app:layout_constraintEnd_toEndOf="@id/feedName"
+    app:layout_constraintStart_toStartOf="@id/feedName"
+    app:layout_constraintTop_toBottomOf="@id/replyButton" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

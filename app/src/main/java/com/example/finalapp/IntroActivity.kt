@@ -1,6 +1,10 @@
 package com.example.finalapp
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -17,7 +21,7 @@ class IntroActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_intro2)
-
+        createNotificationChannel()
             Handler().postDelayed({
                 val currentUserUid = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -57,4 +61,20 @@ class IntroActivity : AppCompatActivity() {
                 }
             }, 2000)
         }
+    private fun createNotificationChannel() {
+        // Check for API level 26 and above, as notification channels are not used in lower versions
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.notChannel) // Human-readable name for the channel
+            val descriptionText = getString(R.string.notChannel)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channelId = "444567" // Unique ID for the channel
+            val channel = NotificationChannel(channelId, name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
     }

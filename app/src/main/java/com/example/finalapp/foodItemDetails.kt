@@ -5,8 +5,10 @@ import com.google.firebase.database.ValueEventListener
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +23,7 @@ import com.example.finalapp.utils.CartStorage
 import com.google.firebase.auth.FirebaseAuth
 
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class foodItemDetails : AppCompatActivity() {
 
@@ -31,21 +34,62 @@ class foodItemDetails : AppCompatActivity() {
     private lateinit var itemDescription: TextView
     private lateinit var addToOrder: Button
     private lateinit var checkout: Button
+    private lateinit var cart: ImageView
+    private lateinit var logout: ImageView
+    private lateinit var profile: ImageView
+    private lateinit var home: ImageView
+    private  lateinit var  auth: FirebaseAuth
     private lateinit var feedbackButton: Button
     private lateinit var back: Button
+    private lateinit var feedbackAdapter: FeedbackAdapter
     private lateinit var dbRef : FirebaseDatabase
-
+    private var currentUserId: String? = null
+    private var currentUserName: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_item_details)
+        auth= FirebaseAuth.getInstance()
+        cart=findViewById(R.id.cartIcon)
+        logout =findViewById(R.id.logoutIcon)
+        home=findViewById(R.id.homeIcon)
+        profile=findViewById(R.id.profileIcon)
+
+
         feedBack=findViewById(R.id.feedbackRecycler)
         feedbackButton =findViewById(R.id.feedBackBtn)
         checkout = findViewById(R.id.checkoutBtn)
         feedbackEditText =findViewById(R.id.feedbackText)
+        currentUserId = FirebaseAuth.getInstance().currentUser?.uid
+        fetchUserName(currentUserId) { userName ->
+            currentUserName = userName
+            initializeFeedbackAdapter() // Initialize the adapter after fetching the username
+        }
+        cart.setOnClickListener{
+            val intent =Intent(this@foodItemDetails, CartActivity::class.java)
+            startActivity(intent)
+        }
 
-        val feedbackAdapter = FeedbackAdapter(emptyList())
-        feedBack.adapter = feedbackAdapter
-        feedBack.layoutManager = LinearLayoutManager(this)
+        home.setOnClickListener{   val intent =Intent(this@foodItemDetails, MenuActivity::class.java)
+            startActivity(intent)}
+        profile.setOnClickListener{   val intent =Intent(this@foodItemDetails, AccountDetails::class.java)
+            startActivity(intent)}
+        logout.setOnClickListener {
+            FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Firebase token deletion successful, proceed with sign-out
+                    auth.signOut()
+
+                    // Start the MainActivity
+                    val intent = Intent(this@foodItemDetails, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // Handle the error in token deletion, if necessary
+                }
+            }
+        }
+//        val feedbackAdapter = FeedbackAdapter(emptyList())
+//        feedBack.adapter = feedbackAdapter
+//        feedBack.layoutManager = LinearLayoutManager(this)
 
         feedbackButton.setOnClickListener {
             val feedbackText = feedbackEditText.text.toString()
@@ -69,6 +113,7 @@ class foodItemDetails : AppCompatActivity() {
                         Toast.makeText(this, "Feedback submitted", Toast.LENGTH_SHORT).show()
                         feedbackEditText.text.clear()
                     } else {
+                        Log.e("FeedbackSubmission", "Failed to submit feedback: ", task.exception)
                         Toast.makeText(this, "Failed to submit feedback", Toast.LENGTH_SHORT).show()
                     }
                 }
@@ -131,7 +176,12 @@ class foodItemDetails : AppCompatActivity() {
         }
 
     }
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MenuActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
     private fun setItemsToViews() {
         itemName.text = intent.getStringExtra("itemName")
         itemDescription.text = intent.getStringExtra("itemDescription")
@@ -154,4 +204,33 @@ class foodItemDetails : AppCompatActivity() {
                 onComplete("Anonymous")
             }
         })
-    }}
+    }private fun initializeFeedbackAdapter() {
+        feedbackAdapter = FeedbackAdapter(emptyList(), currentUserId ?: "", currentUserName ?: "Anonymous")
+        feedBack.adapter = feedbackAdapter
+        feedBack.layoutManager = LinearLayoutManager(this)
+        loadFeedback() // Load feedback data
+    }
+
+    private fun loadFeedback() {
+        val itemId = intent.getStringExtra("itemId")
+        val feedbackRef = itemId?.let {
+            FirebaseDatabase.getInstance().getReference("Feedback").child(it)
+        }
+
+        feedbackRef?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val feedbacks = mutableListOf<FeedBackModel>()
+                snapshot.children.forEach { child ->
+                    val feedback = child.getValue(FeedBackModel::class.java)
+                    feedback?.let { feedbacks.add(it) }
+                }
+                (feedBack.adapter as FeedbackAdapter).updateFeedbackList(feedbacks)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.e("foodItemDetails", "Error loading feedback: ${error.toException()}")
+                Toast.makeText(this@foodItemDetails, "Failed to load feedback", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+}

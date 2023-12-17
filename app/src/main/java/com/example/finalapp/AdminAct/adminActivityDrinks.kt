@@ -58,6 +58,7 @@ class adminActivityDrinks : AppCompatActivity() {
                     adapter.setOnItemClickListener(object: DrinkAdapter.onItemClickListener {
                         override fun onItemClick(position: Int) {
                             val intent = Intent(this@adminActivityDrinks, DrinkItemDetails::class.java)
+                            intent.putExtra("itemId",drinkList[position].itemId)
                             intent.putExtra("itemName", drinkList[position].itemName)
                             intent.putExtra("itemDescription", drinkList[position].itemDescription)
                             intent.putExtra("itemPrice", drinkList[position].itemPrice)

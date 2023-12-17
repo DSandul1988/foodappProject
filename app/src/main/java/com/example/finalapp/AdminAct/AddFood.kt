@@ -39,7 +39,7 @@ class AddFood : AppCompatActivity() {
         }
 
         seeFoodAll.setOnClickListener{
-            val intent = Intent(this, FoodActivity::class.java)
+            val intent = Intent(this, adminActivityFood::class.java)
             startActivity(intent)
         }
 

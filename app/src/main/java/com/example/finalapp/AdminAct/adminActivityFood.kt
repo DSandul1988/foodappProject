@@ -55,6 +55,7 @@ class adminActivityFood : AppCompatActivity() {
                     Dadapter.setOnItemClickListener(object: FoodAdapter.onItemClickListener{
                         override fun onItemClick(position: Int) {
                             val intent= Intent(this@adminActivityFood, adminFoodItemDetails::class.java)
+                            intent.putExtra("foodId",foodList[position].itemId)
                             intent.putExtra("foodName",foodList[position].itemName)
                             intent.putExtra("foodDescription",foodList[position].itemDescription)
                             intent.putExtra("foodPrice",foodList[position].itemPrice)

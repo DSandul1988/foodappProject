@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -23,6 +24,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.UUID
 
 class food_items_forFood : AppCompatActivity() {
@@ -32,10 +34,18 @@ class food_items_forFood : AppCompatActivity() {
     private lateinit var feedBack: RecyclerView
     private lateinit var itemPrice: TextView
     private lateinit var itemDescription: TextView
+    private lateinit var cart: ImageView
+    private lateinit var logout: ImageView
+    private lateinit var profile: ImageView
+    private lateinit var home: ImageView
+    private  lateinit var  auth: FirebaseAuth
     private lateinit var addToCart: Button
     private lateinit var checkout: Button
     private lateinit var back: Button
+    private lateinit var feedbackAdapter: FeedbackAdapter
     private lateinit var dbRef : FirebaseDatabase
+    private var currentUserId: String? = null
+    private var currentUserName: String? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food_items_for_food)
@@ -43,27 +53,57 @@ class food_items_forFood : AppCompatActivity() {
         feedBack=findViewById(R.id.feedbackRecycler)
         feedbackButton =findViewById(R.id.feedBackBtn)
         feedbackEditText =findViewById(R.id.feedbackText)
-
-
-        checkout.setOnClickListener{
-
-
-            // Create a new intent to start CartActivity
-            val intent = Intent(this@food_items_forFood, CartActivity::class.java)
-
-            startActivity(intent)}
+        currentUserId = FirebaseAuth.getInstance().currentUser?.uid
         back=findViewById(R.id.backBtn)
-        back.setOnClickListener{
-            val intent = Intent(this@food_items_forFood,FoodActivity::class.java)
-            startActivity(intent) }
         itemName = findViewById(R.id.fooditemNameTxt)
         itemDescription = findViewById(R.id.foodItemDescriptionTxt)
         itemPrice =findViewById(R.id.foodItemPricetxt)
         addToCart = findViewById(R.id.addToCartBtn)
+        auth= FirebaseAuth.getInstance()
+        cart=findViewById(R.id.cartIcon)
+        logout =findViewById(R.id.logoutIcon)
+        home=findViewById(R.id.homeIcon)
+        profile=findViewById(R.id.profileIcon)
+        fetchUserName(currentUserId) { userName ->
+            currentUserName = userName
+            initializeFeedbackAdapter() // Initialize the adapter after fetching the username
+        }
         setItemsToViews()
-        val feedbackAdapter = FeedbackAdapter(emptyList())
-        feedBack.adapter = feedbackAdapter
-        feedBack.layoutManager = LinearLayoutManager(this)
+        cart.setOnClickListener{
+            val intent =Intent(this@food_items_forFood, CartActivity::class.java)
+            startActivity(intent)
+        }
+
+        home.setOnClickListener{   val intent =Intent(this@food_items_forFood, MenuActivity::class.java)
+            startActivity(intent)}
+        profile.setOnClickListener{   val intent =Intent(this@food_items_forFood, AccountDetails::class.java)
+            startActivity(intent)}
+        logout.setOnClickListener {
+            FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Firebase token deletion successful, proceed with sign-out
+                    auth.signOut()
+
+                    // Start the MainActivity
+                    val intent = Intent(this@food_items_forFood, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // Handle the error in token deletion, if necessary
+                }
+            }
+        }
+        checkout.setOnClickListener{
+            val intent = Intent(this@food_items_forFood, CartActivity::class.java)
+            startActivity(intent)}
+
+        back.setOnClickListener{
+            val intent = Intent(this@food_items_forFood,FoodActivity::class.java)
+            startActivity(intent) }
+
+
+//        val feedbackAdapter = FeedbackAdapter(emptyList())
+//        feedBack.adapter = feedbackAdapter
+//        feedBack.layoutManager = LinearLayoutManager(this)
 
         feedbackButton.setOnClickListener {
             val feedbackText = feedbackEditText.text.toString()
@@ -73,8 +113,8 @@ class food_items_forFood : AppCompatActivity() {
             fetchUserName(userId) { userName ->
                 val feedback = FeedBackModel(
                     itemId = itemId,
-                    userId = userId,
-                    userName = userName,
+                    userId = currentUserId,
+                    userName = currentUserName,
                     feedbackText = feedbackText
                 )
 
@@ -140,9 +180,16 @@ class food_items_forFood : AppCompatActivity() {
                 Toast.makeText(this, "Item details are missing", Toast.LENGTH_SHORT).show()
             }
         }
+
+
     }
 
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, MenuActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
     private fun setItemsToViews() {
         itemName.text = intent.getStringExtra("itemName")
         itemDescription.text = intent.getStringExtra("itemDescription")
@@ -178,5 +225,34 @@ private fun fetchUserName(userId: String?, onComplete: (String) -> Unit) {
             }
         }
         return total
+    }
+
+    private fun initializeFeedbackAdapter() {
+        feedbackAdapter = FeedbackAdapter(emptyList(), currentUserId ?: "", currentUserName ?: "Anonymous")
+        feedBack.adapter = feedbackAdapter
+        feedBack.layoutManager = LinearLayoutManager(this)
+        loadFeedback() // Load feedback data
+    }
+
+    private fun loadFeedback() {
+        val itemId = intent.getStringExtra("itemId")
+        val feedbackRef = itemId?.let {
+            FirebaseDatabase.getInstance().getReference("Feedback").child(it)
+        }
+
+        feedbackRef?.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val feedbacks = mutableListOf<FeedBackModel>()
+                snapshot.children.forEach { child ->
+                    val feedback = child.getValue(FeedBackModel::class.java)
+                    feedback?.let { feedbacks.add(it) }
+                }
+                (feedBack.adapter as FeedbackAdapter).updateFeedbackList(feedbacks)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@food_items_forFood, "Failed to load feedback", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

@@ -1,10 +1,13 @@
 package com.example.finalapp.AdminAct
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import com.example.finalapp.R
+import com.google.firebase.database.FirebaseDatabase
 
 class adminFoodItemDetails : AppCompatActivity() {
     private lateinit var drinkName: TextView
@@ -20,11 +23,30 @@ class adminFoodItemDetails : AppCompatActivity() {
         delete = findViewById(R.id.deleteFoodBtn)
         drinkPrice = findViewById(R.id.foodPriceTxt)
         setItemsToViews()
+        fun deleteItemFromDatabase(itemId: String?) {
+            itemId?.let {
+                val databaseReference = FirebaseDatabase.getInstance().getReference("menuItems")
+                databaseReference.child(itemId).removeValue().addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Task was successful, display a success message
+                        Toast.makeText(this@adminFoodItemDetails, "Item successfully deleted", Toast.LENGTH_SHORT).show()
+
+                        val intent = Intent (this@adminFoodItemDetails,AdminWelcomePage::class.java)
+                        startActivity(intent)
+                    } else {
+                        // Task failed, display an error message
+                        Toast.makeText(this@adminFoodItemDetails, "Failed to delete item", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
+
+        delete.setOnClickListener{deleteItemFromDatabase(itemId = intent.getStringExtra("foodId")).toString()}
     }
     private fun setItemsToViews() {
-        drinkName.text = intent.getStringExtra("itemName")
-        drinkDescription.text = intent.getStringExtra("itemDescription")
-        drinkPrice.text=intent.getStringExtra("itemPrice")
+        drinkName.text = intent.getStringExtra("foodName")
+        drinkDescription.text = intent.getStringExtra("foodDescription")
+        drinkPrice.text=intent.getStringExtra("foodPrice")
     }
 
     }

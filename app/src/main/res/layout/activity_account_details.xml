@@ -56,11 +56,11 @@
         android:textColor="@color/white"
         android:textStyle="bold"
         app:backgroundTint="@color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/deleteAccTxt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.819" />
+        app:layout_constraintTop_toBottomOf="@+id/profileAttName"
+        app:layout_constraintVertical_bias="0.5" />
 
     <ImageView
         android:id="@+id/profilePicture"
@@ -91,7 +91,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/baseline_shopping_cart_24" />
+            app:srcCompat="@drawable/baseline_account_circle_24" />
 
         <ImageView
             android:id="@+id/homeIcon"
@@ -153,12 +153,12 @@
         android:text="TextView"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/navigationBar"
+        app:layout_constraintBottom_toTopOf="@+id/updateProfilebtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.418"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.665" />
+        app:layout_constraintTop_toBottomOf="@+id/profileEmail"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/profileEmail"
@@ -169,12 +169,10 @@
         android:text="TextView"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.443"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.564" />
+        app:layout_constraintBottom_toTopOf="@+id/profileAttName"
+        app:layout_constraintEnd_toEndOf="@+id/profileAttName"
+        app:layout_constraintTop_toBottomOf="@+id/profileAdressTxt"
+        app:layout_constraintVertical_bias="0.5" />
 
     <TextView
         android:id="@+id/profileAdressTxt"
@@ -184,10 +182,20 @@
         android:fontFamily="@font/nunito_extralight"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/profileEmail"
+        app:layout_constraintEnd_toEndOf="@+id/profileEmail"
+        app:layout_constraintTop_toBottomOf="@+id/profilePicture"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <TextView
+        android:id="@+id/deleteAccTxt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Delete account "
+        android:textColor="#FF4C4C"
+        app:layout_constraintBottom_toTopOf="@+id/navigationBar"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.463" />
+        app:layout_constraintTop_toBottomOf="@+id/updateProfilebtn"
+        app:layout_constraintVertical_bias="0.5" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -14,10 +14,13 @@ class MenuActivity : AppCompatActivity() {
     private  lateinit var  auth: FirebaseAuth
     private lateinit var drinks :ImageView
     private lateinit var foods :ImageView
+    private lateinit var cart:ImageView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
         logOut=findViewById(R.id.logoutIcon)
+        cart = findViewById(R.id.cartIcon)
 userProf=findViewById(R.id.profileIcon)
         auth= FirebaseAuth.getInstance()
         userProf.setOnClickListener{
@@ -32,6 +35,11 @@ userProf=findViewById(R.id.profileIcon)
 foods= findViewById(R.id.foodsDirect)
         foods.setOnClickListener{
             val intent = Intent(this@MenuActivity,FoodActivity::class.java)
+            startActivity(intent)
+        }
+
+        cart.setOnClickListener{
+            val intent =Intent(this@MenuActivity, CartActivity::class.java)
             startActivity(intent)
         }
         logOut.setOnClickListener {

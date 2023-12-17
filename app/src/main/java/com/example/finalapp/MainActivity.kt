@@ -3,6 +3,7 @@ package com.example.finalapp
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 
 import android.widget.Button
 import android.widget.EditText
@@ -11,11 +12,13 @@ import android.widget.Toast
 import com.example.finalapp.AdminAct.AdminWelcomePage
 import com.example.finalapp.Model.UserModel
 import com.example.finalapp.utils.FirebaseUtils
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.Constants.MessageNotificationKeys.TAG
 
 import com.google.firebase.messaging.FirebaseMessaging
 
@@ -27,15 +30,15 @@ class MainActivity : AppCompatActivity() {
     private lateinit var registerLink: TextView
     private lateinit var auth: FirebaseAuth
     private lateinit var FirebaseUtil:FirebaseUtils
+    private lateinit var resetEmail:TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
 //        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
 //            if (!task.isSuccessful) {
-//                Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+//                Log.i(TAG, "Fetching FCM registration token failed", task.exception)
 //                return@OnCompleteListener
 //            }
 //
@@ -44,7 +47,7 @@ class MainActivity : AppCompatActivity() {
 //
 //            // Log and toast
 //            val msg =  token
-//            Log.d(TAG, msg)
+//            Log.i("TOKEN", msg)
 //            Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
 //        })
         Email = findViewById(R.id.emailLogTXT)
@@ -52,9 +55,14 @@ class MainActivity : AppCompatActivity() {
         loginButton = findViewById(R.id.LogInbtn)
         auth = FirebaseAuth.getInstance()
         registerLink = findViewById(R.id.regTxT)
-
+        resetEmail =findViewById(R.id.resetPass)
         registerLink.setOnClickListener {
             val intent = Intent(this@MainActivity, RegisterActivity::class.java)
+            startActivity(intent)
+        }
+
+        resetEmail.setOnClickListener{
+            val intent =Intent(this, resetPassword::class.java)
             startActivity(intent)
         }
         loginButton.setOnClickListener {
@@ -71,7 +79,8 @@ class MainActivity : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        updateCurrentUserFCMToken()
+
+                      updateCurrentUserFCMToken()
                         // User is successfully logged in
                         val firebaseUser = auth.currentUser
 
@@ -129,7 +138,7 @@ class MainActivity : AppCompatActivity() {
                                 user?.FCMToken = token
                                 snapshot.ref.setValue(user)
                                     .addOnSuccessListener {
-                                        // Handle successful update
+                                        Log.i("Token:", token, task.exception)  // Handle successful update
                                     }
                                     .addOnFailureListener {
                                         // Handle failed update
@@ -149,6 +158,21 @@ class MainActivity : AppCompatActivity() {
             // Handle the case where there is no logged-in user
         }
     }
+private fun getToken (){
+    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+        if (!task.isSuccessful) {
+            Log.i(TAG, "Fetching FCM registration token failed", task.exception)
+            return@OnCompleteListener
+        }
 
+        // Get new FCM registration token
+        val token = task.result
+
+        // Log and toast
+        val msg =  token
+        Log.e("My token", msg)
+        Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
+    })
+}
 }
 

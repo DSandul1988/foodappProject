@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">FinalApp</string>
+    <string name="notChannel">channel</string>
 </resources>

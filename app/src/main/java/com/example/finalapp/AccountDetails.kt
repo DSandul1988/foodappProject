@@ -19,9 +19,12 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.ktx.Firebase
 import android.view.LayoutInflater
 import android.widget.EditText
+import com.google.firebase.auth.FirebaseAuth
 
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.messaging.Constants.MessageNotificationKeys.TAG
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.storage.ktx.storage
 
 class AccountDetails : AppCompatActivity() {
@@ -35,18 +38,54 @@ class AccountDetails : AppCompatActivity() {
     private lateinit var profileImageView: ImageView
     private lateinit var backBtn: ImageView
     private lateinit var profileImageCamera: ImageView
+    private lateinit var cart: ImageView
+    private lateinit var logout: ImageView
+    private lateinit var profile: ImageView
+    private lateinit var home: ImageView
+    private  lateinit var  auth: FirebaseAuth
+    private lateinit var deleteAccout :  TextView
+    private lateinit var myOrders:Button
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_details)
 
-        // Initialize views
+        auth= FirebaseAuth.getInstance()
+        cart=findViewById(R.id.cartIcon)
+        logout =findViewById(R.id.logoutIcon)
+        home=findViewById(R.id.homeIcon)
+        profile=findViewById(R.id.profileIcon)        // Initialize views
+        cart.setOnClickListener{
+            val intent =Intent(this@AccountDetails, CartActivity::class.java)
+            startActivity(intent)
+        }
+
+        home.setOnClickListener{   val intent =Intent(this@AccountDetails, MenuActivity::class.java)
+            startActivity(intent)}
+        profile.setOnClickListener{   val intent =Intent(this@AccountDetails, AccountDetails::class.java)
+            startActivity(intent)}
+        logout.setOnClickListener {
+            FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    // Firebase token deletion successful, proceed with sign-out
+                    auth.signOut()
+
+                    // Start the MainActivity
+                    val intent = Intent(this@AccountDetails, MainActivity::class.java)
+                    startActivity(intent)
+                } else {
+                    // Handle the error in token deletion, if necessary
+                }
+            }
+        }
+
+
         userN = findViewById(R.id.profileNAMETxt)
         userE = findViewById(R.id.profileEmail)
         userNa = findViewById(R.id.profileAttName)
         userAddress = findViewById(R.id.profileAdressTxt)
-
+        deleteAccout =findViewById(R.id.deleteAccTxt)
         updateProfile = findViewById(R.id.updateProfilebtn)
         profileImageView = findViewById(R.id.profilePicture)
         backBtn =findViewById(R.id.backArrow)
@@ -64,6 +103,8 @@ backBtn.setOnClickListener{
     val intent =Intent(this@AccountDetails,MenuActivity::class.java)
     startActivity(intent)
 }
+deleteAccout.setOnClickListener{showDeleteDialog()}
+
         profileImageCamera.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
@@ -82,7 +123,6 @@ backBtn.setOnClickListener{
                 uploadImageToFirebaseStorage(imageUri)
             }
         }
-
 
     }
 
@@ -191,6 +231,33 @@ backBtn.setOnClickListener{
                     Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show()
                 }
         }
+    }
+
+    private fun showDeleteDialog() {
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.delete_dialog, null)
+        val customDialog = AlertDialog.Builder(this)
+            .setView(dialogView)
+            .create()
+
+        dialogView.findViewById<Button>(R.id.btnConfirmDelete).setOnClickListener {
+            val user = Firebase.auth.currentUser!!
+
+            user.delete()
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                     Toast.makeText(this,"Account deleted", Toast.LENGTH_SHORT).show()
+                        val intent =Intent(this@AccountDetails,MainActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
+            customDialog.dismiss()
+        }
+
+        dialogView.findViewById<Button>(R.id.btnCancelDelete).setOnClickListener {
+            customDialog.dismiss()
+        }
+
+        customDialog.show()
     }
 }
 

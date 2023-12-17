@@ -12,6 +12,7 @@ import com.example.finalapp.Adapters.OrderAdapter
 import com.example.finalapp.MainActivity
 import com.example.finalapp.Model.OrderModel
 import com.example.finalapp.R
+import com.example.finalapp.adminPastOrders
 import com.example.finalapp.viewOrderDetails
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -28,6 +29,7 @@ class AdminWelcomePage : AppCompatActivity() {
     private lateinit var addDrinks: Button
     private lateinit var logOut: Button
     private lateinit var addFood: Button
+    private lateinit var seeP: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_admin_welcome_page)
@@ -39,15 +41,21 @@ class AdminWelcomePage : AppCompatActivity() {
     addDrinks=findViewById(R.id.WelcomeDrnkBtn)
         addFood=findViewById(R.id.WelcomeFoodBtn)
         logOut =findViewById(R.id.WelcomeLogOutBtn)
+        seeP =findViewById(R.id.seePast)
         getOrderData()
-addDrinks.setOnClickListener{
+addDrinks.setOnClickListener {
     val intent = Intent(this, AddDrinks::class.java)
     startActivity(intent)
+}
 
+        seeP.setOnClickListener{
+            val intent =Intent(this@AdminWelcomePage, adminPastOrders::class.java)
+            startActivity(intent)
+        }
     addFood.setOnClickListener{
         val intent = Intent(this@AdminWelcomePage, AddFood::class.java)
         startActivity(intent)}
-}
+
         logOut.setOnClickListener {
             // Delete the FCM token
             FirebaseMessaging.getInstance().deleteToken().addOnCompleteListener { task ->
